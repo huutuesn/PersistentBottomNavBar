@@ -1,13 +1,46 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar_example_project/modal-tab.dart';
+import 'package:persistent_bottom_nav_bar_example_project/payment.dart';
 
 import 'custom-widget-tabs.widget.dart';
+import 'global.dart';
 import 'modal-screen.dart';
 import 'screens.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  MemoryImage appBackgroundMemImage = MemoryImage(Uint8List.fromList(<int>[0]));
+  try {
+    appBackgroundMemImage = await loadBackgroundImage();
+    homeBackgroundDecoration = BoxDecoration(
+      image: DecorationImage(
+        image: appBackgroundMemImage,
+        fit: BoxFit.cover,
+      ),
+    );
+  } catch (e) {
+    print('errrrrrrrrrr $e');
+  }
+
+  runApp(MyApp());
+}
 
 BuildContext testContext;
+
+Future<MemoryImage> loadBackgroundImage() async {
+  try {
+    Uint8List data =
+        (await rootBundle.load('assets/images/BG.png')).buffer.asUint8List();
+    return MemoryImage(data);
+  } catch (e) {
+    print('load fail $e');
+  }
+
+  return null;
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -17,14 +50,37 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainMenu(),
+      home: ProvidedStylesExample(),
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/first': (context) => MainScreen2(),
+        // '/first': (context) => MainScreen2(),
         // When navigating to the "/second" route, build the SecondScreen widget.
-        '/second': (context) => MainScreen3(),
+        //  '/second': (context) => MainScreen3(),
       },
+    );
+  }
+}
+
+class Test extends StatefulWidget {
+  Test({Key key}) : super(key: key);
+
+  @override
+  _TestState createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image:
+              DecorationImage(image: AssetImage('assets/images/nav-btn-0.png')),
+          // shape: BoxShape.circle,
+          border: Border.all(color: Colors.transparent, width: 5.0),
+        ),
+      ),
     );
   }
 }
@@ -89,11 +145,32 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
   PersistentTabController _controller;
   bool _hideNavBar;
 
+  String title = 'demo';
+  double appBarHeight = kToolbarHeight;
+  bool isExtra = false;
   @override
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
+    _controller.addListener(_tabChange);
     _hideNavBar = false;
+  }
+
+  _tabChange() {
+    print('tab change =-==========');
+    if (_controller.index != 2)
+      setState(() {
+        title = 'HOME';
+        isExtra = false;
+        appBarHeight = kToolbarHeight;
+      });
+    else {
+      setState(() {
+        title = 'NOO';
+        isExtra = true;
+        appBarHeight = 0;
+      });
+    }
   }
 
   List<Widget> _buildScreens() {
@@ -106,8 +183,19 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
             _hideNavBar = !_hideNavBar;
           });
         },
+        backgroundColor: Colors.yellow,
       ),
       MainScreen(
+        menuScreenContext: widget.menuScreenContext,
+        hideStatus: _hideNavBar,
+        onScreenHideButtonPressed: () {
+          setState(() {
+            _hideNavBar = !_hideNavBar;
+          });
+        },
+        backgroundColor: Colors.transparent,
+      ),
+      PaymentPage(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
@@ -124,15 +212,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
             _hideNavBar = !_hideNavBar;
           });
         },
-      ),
-      MainScreen(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
+        backgroundColor: Colors.yellow,
       ),
       MainScreen(
         menuScreenContext: widget.menuScreenContext,
@@ -169,22 +249,26 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         ),
       ),
       PersistentBottomNavBarItem(
-          icon: Icon(Icons.add),
-          title: ("Add"),
-          activeColorPrimary: Colors.blueAccent,
-          activeColorSecondary: Colors.white,
-          inactiveColorPrimary: Colors.white,
-          routeAndNavigatorSettings: RouteAndNavigatorSettings(
-            initialRoute: '/',
-            routes: {
-              '/first': (context) => MainScreen2(),
-              '/second': (context) => MainScreen3(),
-            },
-          ),
-          onPressed: (context) {
+        icon: Icon(Icons.add),
+        title: ("Add"),
+        activeColorPrimary: Colors.redAccent,
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.white,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => MainScreen2(),
+            '/second': (context) => MainScreen3(),
+          },
+        ),
+        /* onPressed: (context) {
             pushDynamicScreen(context,
-                screen: SampleModalScreen(), withNavBar: true);
-          }),
+                screen: SampleModalScreenTab(), withNavBar: true);
+            setState(() {
+              title = 'barco';
+            });
+          } */
+      ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),
         title: ("Messages"),
@@ -216,73 +300,126 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Navigation Bar Demo')),
-      drawer: Drawer(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('This is the Drawer'),
-            ],
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
-      ),
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        items: _navBarsItems(),
-        confineInSafeArea: true,
-        backgroundColor: Colors.white,
-        handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: true,
-        stateManagement: true,
-        navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
-            ? 0.0
-            : kBottomNavigationBarHeight,
-        hideNavigationBarWhenKeyboardShows: true,
-        margin: EdgeInsets.all(0.0),
-        popActionScreens: PopActionScreensType.all,
-        bottomScreenMargin: 0.0,
-        onWillPop: (context) async {
-          await showDialog(
-            context: context,
-            useSafeArea: true,
-            builder: (context) => Container(
-              height: 50.0,
-              width: 50.0,
-              color: Colors.white,
-              child: ElevatedButton(
-                child: Text("Close"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+        Scaffold(
+          // extendBody: true,
+          extendBodyBehindAppBar: isExtra,
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            toolbarHeight: appBarHeight,
+            title: Text(title),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          /*       drawer: Drawer(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text('This is the Drawer'),
+                    ],
+                  ),
+                ),
+              ), */
+          body:
+              /*  Stack(
+              children: [
+                Container(
+                  height: 800,
+                  width: 300,
+                  color: Colors.blue,
+                ), */
+              Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                // color: Colors.transparent,
+
+                // height: MediaQuery.of(context).size.height -
+                //     44 -
+                //     appBarHeight -
+                //     appBarHeight,
+
+                // decoration: BoxDecoration(
+                //   image: DecorationImage(
+                //     image: AssetImage('assets/images/background.png'),
+                //     fit: BoxFit.fill,
+                //   ),
+                // ),
+                child: PersistentTabView(
+                  context,
+
+                  controller: _controller,
+                  screens: _buildScreens(),
+                  items: _navBarsItems(),
+                  // margin: EdgeInsets.only(bottom: 20),
+                  backgroundColor: Colors.yellow,
+                  handleAndroidBackButtonPress: true,
+                  resizeToAvoidBottomInset: true,
+                  stateManagement: true,
+                  navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
+                      ? 0.0
+                      : kBottomNavigationBarHeight, //56
+                  hideNavigationBarWhenKeyboardShows: true,
+                  margin: EdgeInsets.all(16.0),
+                  popActionScreens: PopActionScreensType.all,
+                  //bottomScreenMargin: kBottomNavigationBarHeight,
+                  confineInSafeArea: false,
+                  onWillPop: (context) async {
+                    await showDialog(
+                      context: context,
+                      useSafeArea: true,
+                      builder: (context) => Container(
+                        height: 50.0,
+                        width: 50.0,
+                        color: Colors.white,
+                        child: ElevatedButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    );
+                    return false;
+                  },
+                  selectedTabScreenContext: (context) {
+                    testContext = context;
+                  },
+                  hideNavigationBar: _hideNavBar,
+                  bottomScreenMargin: 16.0 + 56.0 + 26,
+                  decoration: NavBarDecoration(
+                      colorBehindNavBar: Colors.transparent,
+                      borderRadius: BorderRadius.circular(16.0)),
+                  popAllScreensOnTapOfSelectedTab: true,
+                  itemAnimationProperties: ItemAnimationProperties(
+                    duration: Duration(milliseconds: 400),
+                    curve: Curves.bounceIn,
+                  ),
+                  screenTransitionAnimation: ScreenTransitionAnimation(
+                    animateTabTransition: false,
+                    curve: Curves.easeOut,
+                    duration: Duration(milliseconds: 300),
+                  ),
+                  navBarStyle: NavBarStyle
+                      .style15, // Choose the nav bar style with this property
+                ),
               ),
-            ),
-          );
-          return false;
-        },
-        selectedTabScreenContext: (context) {
-          testContext = context;
-        },
-        hideNavigationBar: _hideNavBar,
-        decoration: NavBarDecoration(
-            colorBehindNavBar: Colors.indigo,
-            borderRadius: BorderRadius.circular(20.0)),
-        popAllScreensOnTapOfSelectedTab: true,
-        itemAnimationProperties: ItemAnimationProperties(
-          duration: Duration(milliseconds: 400),
-          curve: Curves.ease,
+            ],
+          ),
+          /*    ],
+            ), */
         ),
-        screenTransitionAnimation: ScreenTransitionAnimation(
-          animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
-        ),
-        navBarStyle:
-            NavBarStyle.style17, // Choose the nav bar style with this property
-      ),
+      ],
     );
   }
 }

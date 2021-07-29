@@ -417,6 +417,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         ],
       );
     } else if (widget.navBarStyle == NavBarStyle.style15) {
+      print('imcoming');
       return Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -429,7 +430,13 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   _sendScreenContext = false;
                   widget.selectedTabScreenContext!(_contextList[index]);
                 }
-                return Material(elevation: 0, child: widget.screens[index]);
+                return Material(
+                    // TUETHHHHHHHHHHHHHHH
+                    // color: Color.fromRGBO(0, 0, 0, 0),
+                    // type: MaterialType.transparency,
+                    //shadowColor: Colors.transparent,
+                    elevation: 0,
+                    child: widget.screens[index]);
               },
             ),
           ),
@@ -442,6 +449,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                       .abs(),
                   child: GestureDetector(
                     onTap: () {
+                      print('tue-ontap---------------------------------');
                       if (widget.items![(widget.items!.length / 2).floor()]
                               .onPressed !=
                           null) {
@@ -565,6 +573,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         backgroundColor: Colors.transparent,
         child: PersistentTabScaffold(
+          // backgroundColor: Colors.blue,
           controller: _controller,
           itemCount: widget.items == null
               ? widget.itemCount ?? 0
@@ -667,6 +676,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     }
 
     if (widget.handleAndroidBackButtonPress || widget.onWillPop != null) {
+      print('not null');
       return WillPopScope(
         onWillPop: !widget.handleAndroidBackButtonPress &&
                 widget.onWillPop != null
@@ -708,6 +718,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         child: navigationBarWidget(),
       );
     } else {
+      print('nulll');
       return navigationBarWidget();
     }
   }

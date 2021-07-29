@@ -106,6 +106,8 @@ class BottomNavStyle15 extends StatelessWidget {
                       height: height,
                       margin: EdgeInsets.only(top: 2.0),
                       decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/nav-btn-0.png')),
                         shape: BoxShape.circle,
                         color: item.activeColorPrimary,
                         border:
@@ -185,64 +187,67 @@ class BottomNavStyle15 extends StatelessWidget {
       height: this.navBarEssentials!.navBarHeight,
       child: Stack(
         children: <Widget>[
-          ClipRRect(
-            borderRadius:
-                this.navBarDecoration!.borderRadius ?? BorderRadius.zero,
-            child: BackdropFilter(
-              filter: this
-                      .navBarEssentials!
-                      .items![this.navBarEssentials!.selectedIndex!]
-                      .filter ??
-                  ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: this.navBarEssentials!.items!.map((item) {
-                  int index = this.navBarEssentials!.items!.indexOf(item);
-                  return Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (this.navBarEssentials!.items![index].onPressed !=
-                            null) {
-                          this.navBarEssentials!.items![index].onPressed!(this
-                              .navBarEssentials!
-                              .selectedScreenBuildContext);
-                        } else {
-                          this.navBarEssentials!.onItemSelected!(index);
-                        }
-                      },
-                      child: index == midIndex
-                          ? Container(width: 150, color: Colors.transparent)
-                          : _buildItem(
-                              context,
-                              item,
-                              this.navBarEssentials!.selectedIndex == index,
-                              this.navBarEssentials!.navBarHeight),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: this.navBarEssentials!.items!.map((item) {
+              int index = this.navBarEssentials!.items!.indexOf(item);
+              return Flexible(
+                child: GestureDetector(
+                  onTap: () {
+                    if (this.navBarEssentials!.items![index].onPressed !=
+                        null) {
+                      this.navBarEssentials!.items![index].onPressed!(
+                          this.navBarEssentials!.selectedScreenBuildContext);
+                    } else {
+                      this.navBarEssentials!.onItemSelected!(index);
+                    }
+                  },
+                  child: index == midIndex
+                      ? Container(width: 150, color: Colors.transparent)
+                      : _buildItem(
+                          context,
+                          item,
+                          this.navBarEssentials!.selectedIndex == index,
+                          this.navBarEssentials!.navBarHeight),
+                ),
+              );
+            }).toList(),
           ),
           this.navBarEssentials!.navBarHeight == 0
               ? SizedBox.shrink()
-              : Center(
-                  child: GestureDetector(
-                      onTap: () {
-                        if (this.navBarEssentials!.items![midIndex].onPressed !=
-                            null) {
-                          this.navBarEssentials!.items![midIndex].onPressed!(
-                              this
-                                  .navBarEssentials!
-                                  .selectedScreenBuildContext);
-                        } else {
-                          this.navBarEssentials!.onItemSelected!(midIndex);
-                        }
-                      },
-                      child: _buildMiddleItem(
-                          this.navBarEssentials!.items![midIndex],
-                          this.navBarEssentials!.selectedIndex == midIndex,
-                          this.navBarEssentials!.navBarHeight)),
+              : Column(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: GestureDetector(
+                            onTap: () {
+                              if (this
+                                      .navBarEssentials!
+                                      .items![midIndex]
+                                      .onPressed !=
+                                  null) {
+                                this
+                                        .navBarEssentials!
+                                        .items![midIndex]
+                                        .onPressed!(
+                                    this
+                                        .navBarEssentials!
+                                        .selectedScreenBuildContext);
+                              } else {
+                                this
+                                    .navBarEssentials!
+                                    .onItemSelected!(midIndex);
+                              }
+                            },
+                            child: _buildMiddleItem(
+                                this.navBarEssentials!.items![midIndex],
+                                this.navBarEssentials!.selectedIndex ==
+                                    midIndex,
+                                this.navBarEssentials!.navBarHeight)),
+                      ),
+                    ),
+                  ],
                 )
         ],
       ),
