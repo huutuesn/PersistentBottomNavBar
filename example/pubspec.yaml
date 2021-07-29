@@ -9,10 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  flutter_colorful_tab: ^0.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   
   persistent_bottom_nav_bar:
     path: ../
@@ -24,3 +27,4 @@ flutter:
     - assets/images/icon_minapay.png
     - assets/images/background.png
     - assets/images/BG.png
+    - assets/images/bg2.png

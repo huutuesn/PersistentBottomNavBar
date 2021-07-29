@@ -303,10 +303,12 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
     return Stack(
       children: [
         Container(
+          width: MediaQuery.of(context).size.width,
+          height: 375 * 429 / 747,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/background.png'),
-              fit: BoxFit.cover,
+              image: AssetImage('assets/images/bg2.png'),
+              fit: BoxFit.fill,
             ),
           ),
         ),
@@ -373,7 +375,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
                   margin: EdgeInsets.all(16.0),
                   popActionScreens: PopActionScreensType.all,
                   //bottomScreenMargin: kBottomNavigationBarHeight,
-                  confineInSafeArea: false,
+                  confineInSafeArea: true,
                   onWillPop: (context) async {
                     await showDialog(
                       context: context,
@@ -396,7 +398,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
                     testContext = context;
                   },
                   hideNavigationBar: _hideNavBar,
-                  bottomScreenMargin: 16.0 + 56.0 + 26,
+                  bottomScreenMargin: 16.0 + 56.0 + 34,
                   decoration: NavBarDecoration(
                       colorBehindNavBar: Colors.transparent,
                       borderRadius: BorderRadius.circular(16.0)),

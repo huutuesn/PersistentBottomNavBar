@@ -4,8 +4,9 @@ import 'package:persistent_bottom_nav_bar_example_project/global.dart';
 import 'package:persistent_bottom_nav_bar_example_project/main.dart';
 
 import 'modal-screen.dart';
+import 'package:flutter_colorful_tab/flutter_colorful_tab.dart';
 
-class PaymentPage extends StatelessWidget {
+class PaymentPage extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
@@ -19,40 +20,103 @@ class PaymentPage extends StatelessWidget {
       : super(key: key);
 
   @override
+  _PaymentPageState createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(vsync: this, length: 4);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print('home decor------xxx $homeBackgroundDecoration');
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/background.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.blue,
-            elevation: 0,
-            bottom: TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.flight)),
-                Tab(icon: Icon(Icons.directions_transit)),
-                Tab(icon: Icon(Icons.directions_car)),
+    print('home decor------xxx ${MediaQuery.of(context).devicePixelRatio}');
+    return Stack(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 375 * 429 / 747,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg2.png'),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ColorfulTabBar(
+                  selectedHeight: 48,
+                  unselectedHeight: 48,
+                  tabs: [
+                    TabItem(
+                        title: Container(
+                          width: 60,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.home_outlined),
+                                SizedBox(width: 8),
+                                Text('Home')
+                              ]),
+                        ),
+                        color: Colors.red.shade600,
+                        unselectedColor: Colors.blue),
+                    TabItem(
+                        title: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.favorite_outline),
+                              SizedBox(width: 8),
+                              Text('Favorite')
+                            ]),
+                        color: Colors.red.shade600),
+                    TabItem(
+                        title: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.search_outlined),
+                              SizedBox(width: 8),
+                              Text('Search')
+                            ]),
+                        color: Colors.lime.shade600),
+                    TabItem(
+                        title: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.settings_outlined),
+                              SizedBox(width: 8),
+                              Text('Settings')
+                            ]),
+                        color: Colors.blue.shade600),
+                  ],
+                  controller: _tabController,
+                ),
+                Container(
+                  height: 60,
+                  width: 300,
+                  color: Colors.red,
+                  child: TabBarView(
+                      controller: _tabController,
+                      children: List.generate(
+                          4,
+                          (index) => Container(
+                                height: 60,
+                                width: 300,
+                                color: Colors.red,
+                              ))),
+                ),
               ],
             ),
-            title: Text('Scan'),
-          ),
-          body: TabBarView(
-            children: [
-              Icon(Icons.flight, size: 350),
-              Icon(Icons.directions_transit, size: 350),
-              Icon(Icons.directions_car, size: 350),
-            ],
           ),
         ),
-      ),
+      ],
     );
     /* DefaultTabController(
       length: 3,
@@ -97,5 +161,17 @@ class PaymentPage extends StatelessWidget {
         ),
       ),
     ); */
+  }
+
+  Widget _pageView(int index) {
+    return ListView.builder(
+      itemCount: 1,
+      itemBuilder: (context, i) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(child: Text('Tab ${index + 1} - item no $i')),
+        ),
+      ),
+    );
   }
 }
