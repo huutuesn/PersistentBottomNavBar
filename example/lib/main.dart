@@ -175,6 +175,11 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 
   List<Widget> _buildScreens() {
     return [
+      Container(
+        child: Center(
+          child: Text('TRUE HOME'),
+        ),
+      ),
       MainScreen(
         menuScreenContext: widget.menuScreenContext,
         hideStatus: _hideNavBar,
@@ -212,7 +217,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
             _hideNavBar = !_hideNavBar;
           });
         },
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.red,
       ),
       MainScreen(
         menuScreenContext: widget.menuScreenContext,
@@ -222,12 +227,20 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
             _hideNavBar = !_hideNavBar;
           });
         },
+        backgroundColor: Colors.green,
       ),
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.ac_unit),
+        title: "Home",
+        activeColorPrimary: Colors.blue,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
+      ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: "Home",
@@ -329,11 +342,18 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           // extendBody: true,
           extendBodyBehindAppBar: isExtra,
           backgroundColor: Colors.transparent,
+
           appBar: AppBar(
             toolbarHeight: appBarHeight,
             title: Text(title),
             backgroundColor: Colors.transparent,
             elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.access_alarm),
+              onPressed: () {
+                _controller.index = 0;
+              },
+            ),
           ),
           /*       drawer: Drawer(
                 child: Center(
@@ -426,7 +446,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
                     duration: Duration(milliseconds: 300),
                   ),
                   navBarStyle: NavBarStyle
-                      .style15, // Choose the nav bar style with this property
+                      .style15_extra, // Choose the nav bar style with this property
                 ),
               ),
             ],

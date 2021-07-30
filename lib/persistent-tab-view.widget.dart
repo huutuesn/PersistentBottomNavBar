@@ -450,6 +450,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   child: GestureDetector(
                     onTap: () {
                       print('tue-ontap---------------------------------');
+                      // check if onPresse of middle is o
                       if (widget.items![(widget.items!.length / 2).floor()]
                               .onPressed !=
                           null) {

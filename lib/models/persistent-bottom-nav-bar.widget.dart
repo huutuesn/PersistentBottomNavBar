@@ -55,7 +55,8 @@ class PersistentBottomNavBar extends StatelessWidget {
                             child: this.customNavBarWidget)),
                   )
             : this.navBarStyle == NavBarStyle.style15 ||
-                    this.navBarStyle == NavBarStyle.style16
+                    this.navBarStyle == NavBarStyle.style16 ||
+                    this.navBarStyle == NavBarStyle.style15_extra
                 ? this.margin!.bottom > 0
                     ? SafeArea(
                         top: false,
@@ -265,6 +266,12 @@ class PersistentBottomNavBar extends StatelessWidget {
           );
         case NavBarStyle.style15:
           return BottomNavStyle15(
+            navBarEssentials: this.navBarEssentials,
+            navBarDecoration: this.navBarDecoration,
+          );
+
+        case NavBarStyle.style15_extra:
+          return BottomNavStyle15Extra(
             navBarEssentials: this.navBarEssentials,
             navBarDecoration: this.navBarDecoration,
           );

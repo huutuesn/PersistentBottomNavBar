@@ -49,6 +49,7 @@ part 'nav-bar-styles/style-12-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-13-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-14-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-15-bottom-nav-bar.widget.dart';
+part 'nav-bar-styles/style-15_extra-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-16-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-17-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-18-bottom-nav-bar.widget.dart';
