@@ -40,80 +40,88 @@ class _PaymentPageState extends State<PaymentPage>
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 375 * 429 / 747,
+          height: MediaQuery.of(context).size.width * 429 / 747,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/bg2.png'),
               fit: BoxFit.fill,
             ),
           ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ColorfulTabBar(
-                  selectedHeight: 48,
-                  unselectedHeight: 48,
-                  tabs: [
-                    TabItem(
-                        title: Container(
-                          width: 60,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.home_outlined),
-                                SizedBox(width: 8),
-                                Text('Home')
-                              ]),
-                        ),
-                        color: Colors.red.shade600,
-                        unselectedColor: Colors.blue),
-                    TabItem(
-                        title: Column(
+        ),
+        Positioned(
+          top: kToolbarHeight + MediaQuery.of(context).padding.top,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              ColorfulTabBar(
+                selectedHeight: 48,
+                unselectedHeight: 48,
+                tabs: [
+                  TabItem(
+                      title: Container(
+                        width: 60,
+                        child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.favorite_outline),
+                              Icon(Icons.home_outlined),
                               SizedBox(width: 8),
-                              Text('Favorite')
+                              Text('Home')
                             ]),
-                        color: Colors.red.shade600),
-                    TabItem(
-                        title: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.search_outlined),
-                              SizedBox(width: 8),
-                              Text('Search')
-                            ]),
-                        color: Colors.lime.shade600),
-                    TabItem(
-                        title: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.settings_outlined),
-                              SizedBox(width: 8),
-                              Text('Settings')
-                            ]),
-                        color: Colors.blue.shade600),
-                  ],
-                  controller: _tabController,
-                ),
-                Container(
-                  height: 60,
-                  width: 300,
-                  color: Colors.red,
+                      ),
+                      color: Colors.red.shade600,
+                      unselectedColor: Colors.blue),
+                  TabItem(
+                      title: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.favorite_outline),
+                            SizedBox(width: 8),
+                            Text('Favorite')
+                          ]),
+                      color: Colors.red.shade600,
+                      unselectedColor: Colors.blue),
+                  TabItem(
+                      title: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.search_outlined),
+                            SizedBox(width: 8),
+                            Text('Search')
+                          ]),
+                      color: Colors.red.shade600,
+                      unselectedColor: Colors.blue),
+                  TabItem(
+                      title: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.settings_outlined),
+                            SizedBox(width: 8),
+                            Text('Settings')
+                          ]),
+                      color: Colors.red.shade600,
+                      unselectedColor: Colors.blue),
+                ],
+                controller: _tabController,
+              ),
+              Expanded(
+                child: Container(
+                  //height: 60,
+                  //width: 300,
+                  // color: Colors.blue,
                   child: TabBarView(
                       controller: _tabController,
                       children: List.generate(
                           4,
                           (index) => Container(
-                                height: 60,
-                                width: 300,
-                                color: Colors.red,
+                                // height: 60,
+                                // width: 300,
+                                color: Colors.transparent,
                               ))),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

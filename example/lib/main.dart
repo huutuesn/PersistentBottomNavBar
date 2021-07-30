@@ -304,11 +304,24 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 375 * 429 / 747,
+          height: MediaQuery.of(context).size.width * 429 / 747,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/bg2.png'),
               fit: BoxFit.fill,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 429 / 747,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/bg2.png'),
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),
