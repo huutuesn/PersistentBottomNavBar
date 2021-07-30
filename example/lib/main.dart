@@ -158,7 +158,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 
   _tabChange() {
     print('tab change =-==========');
-    if (_controller.index != 2)
+    if (_controller.index != 3)
       setState(() {
         title = 'HOME';
         isExtra = false;
